@@ -21,7 +21,7 @@ jobs:
 
       - name: Upload to S3
         run: |
-          aws s3 sync ./code_repo/lambda_function_payload.zip s3://edgar-test-function-s3-bucket
+          aws s3 sync lambda_function_payload.zip s3://edgar-test-function-s3-bucket
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
