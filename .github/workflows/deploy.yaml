@@ -14,15 +14,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Zip index.js
-        uses: vimtor/action-zip@v1
-        with:
-          files: ./code_repo/index.js
-          dest: ./lambda_function_payload.zip
-
-      - name: Upload to S3
-        run: |
-          aws s3 sync ./lambda_function_payload.zip s3://edgar-test-function-s3-bucket
+        uses: NotCoffee418/s3-zip-upload@v1.1
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: 'ap-southeast-1'
+          AWS_SECRET_ID: ${{ secrets.AWS_SECRET_ID }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          BUCKET_NAME: edgar-test-function-s3-bucket
+          AWS_REGION: 'ap-southeast-1'
+          SOURCE_MODE: ZIP
+          SOURCE_PATH: ./code_repo/index.js
+          DEST_FILE: lambda_function_payload.zip
