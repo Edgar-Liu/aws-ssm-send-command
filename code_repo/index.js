@@ -10,19 +10,4 @@ exports.handler = (event, context, callback) => {
       'content-type': 'application/x-www-form-urlencoded',
     },
   }
-  const notificationURL = `${process.env.backendURL}/messages/activateSubstitute`
-  axios
-    .post(notificationURL, data, config)
-    .then((result) => {
-      console.log(result.data)
-      callback(null, {
-        dutyCrewSnapshotId: event.dutyCrewSnapshotId,
-        apiKey: event.apiKey,
-        acknowledgementStatus: result.data.acknowledgementStatus,
-      })
-    })
-    .catch((err) => {
-      console.log('Error is:️', err)
-      callback(err)
-    })
 }

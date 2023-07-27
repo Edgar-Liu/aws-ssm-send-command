@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Zip index.js
+      - name: Zip index.js and upload to S3 bucket
         uses: NotCoffee418/s3-zip-upload@v1.1
         env:
           AWS_SECRET_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
