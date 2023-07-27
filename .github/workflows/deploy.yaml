@@ -6,7 +6,7 @@ on:
       - lambda/test
 
 jobs:
-  frontend:
+  Deploy-Codes:
     runs-on: ubuntu-latest
     
     steps: 
@@ -14,11 +14,14 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Zip index.js
-        run: Compress-Archive -Path ./index.js -Destination lambda_function_payload.zip
-      
+        uses: vimtor/action-zip@v1
+        with:
+          files: index.js
+          dest: lambda_function_payload.zip
+
       - name: Upload to S3
         run: |
-          aws s3 sync ./lambda_function_payload.zip s3://edgar-test-function-s3-bucket
+          aws s3 sync lambda_function_payload.zip s3://edgar-test-function-s3-bucket
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
