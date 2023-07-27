@@ -32,3 +32,4 @@ jobs:
           aws_region: 'ap-southeast-1'
           function_name: edgar-test-function
           s3_bucket: edgar-test-function-s3-bucket
+          source: lambda_function_payload.zip
