@@ -16,8 +16,8 @@ jobs:
       - name: Zip index.js
         uses: NotCoffee418/s3-zip-upload@v1.1
         env:
-          AWS_SECRET_ID: ${{ secrets.AWS_SECRET_ID }}
-          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          AWS_SECRET_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           BUCKET_NAME: edgar-test-function-s3-bucket
           AWS_REGION: 'ap-southeast-1'
           SOURCE_MODE: ZIP
