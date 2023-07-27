@@ -23,13 +23,10 @@ jobs:
           SOURCE_MODE: ZIP
           SOURCE_PATH: ./code_repo/
           DEST_FILE: lambda_function_payload.zip
-    
+
       - name: Update Lambda
-        uses: appleboy/lambda-action@v0.1.9
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: 'ap-southeast-1'
-          function_name: edgar-test-function
-          s3_bucket: edgar-test-function-s3-bucket
-          source: lambda_function_payload.zip
+        run: |
+          aws lambda update-function-code \
+          --function-name edgar-test-function \
+          --s3-bucket edgar-test-function-s3-bucket \
+          --s3-key lambda_function_payload.zip
