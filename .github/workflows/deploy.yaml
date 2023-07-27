@@ -21,5 +21,5 @@ jobs:
           BUCKET_NAME: edgar-test-function-s3-bucket
           AWS_REGION: 'ap-southeast-1'
           SOURCE_MODE: ZIP
-          SOURCE_PATH: ./code_repo/index.js
+          SOURCE_PATH: ./code_repo/
           DEST_FILE: lambda_function_payload.zip
