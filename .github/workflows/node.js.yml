@@ -1,0 +1,51 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on: pull_request
+jobs:
+  test-container:
+    runs-on: ubuntu-latest
+    services:
+      mydb:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: racer_dev
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/racer_ci
+      JWT_SECRET: kMGKr3QjyltTDYC5u/Rw8P2Ei12nyXS/z9nIWKc3sv/vyS1ZuVHFPMokM1tiUDVg6GwAzkDUGE5OLyQaloAkKcwDLJgrku0/teuusoqHkA6lRy5LguGjVAEaFJDbOUrbPx5nFp/uo7csR4EvHBPhJAaWzf29zCjN20BuoMtHsd+fbeiKJiRsxy553AJZw+5ltQsdbz2FCoO7c79bAiLBErE8Ckr/xVjeRXJ6ghn/7JK69VemJFKbIs4kwdCnsjbBHRK00M3kUJymX6MG8+m121EYbfw2GIsi7NjxOJnq2wv9VjGjM8NgEeheUchEgP7nCESjC8F3SIRLSv3+r1yeTg==
+      ENC_IV: NDF6cjJ5cDcyWGlkNmo0SQ==
+      ENC_KEY: WVJqUXg4OHVIOUViOHNrbnJjenA5Q2xwTjBuOXpJT1k=
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'npm'
+      - run: yarn install
+      - run: npx prisma migrate reset --force --skip-seed
+      - run: yarn test:run
+  yarn-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'npm'
+      - run: yarn install
+      - run: yarn lint

@@ -3,14 +3,14 @@ name: Deploy Lambda codes
 on:
   push:
     tags: 
-      - code_repo
+      - sendEmail.v.*
 
 jobs:
   Deploy-Lambda-Codes:
     runs-on: ubuntu-latest
     
     steps: 
-      - name: Checkoutc
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Zip index.js and upload to S3 bucket
@@ -18,11 +18,11 @@ jobs:
         env:
           AWS_SECRET_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          BUCKET_NAME: edgar-test-function-s3-bucket
+          BUCKET_NAME: racer-prod-lambda-s3-bucket-0000
           AWS_REGION: 'ap-southeast-1'
           SOURCE_MODE: ZIP
-          SOURCE_PATH: ./code_repo/
-          DEST_FILE: lambda_function_payload.zip
+          SOURCE_PATH: ./external/sendEmail-d5246468-7d2d-4e2c-9efe-ea6e1b79034a
+          DEST_FILE: sendEmail.zip
 
       - name: 'Configure AWS Credentials'
         uses: aws-actions/configure-aws-credentials@v1-node16
@@ -34,6 +34,6 @@ jobs:
       - name: 'Update Lambda'
         run: |
           aws lambda update-function-code \
-          --function-name edgar-test-function \
-          --s3-bucket edgar-test-function-s3-bucket \
-          --s3-key lambda_function_payload.zip
+          --function-name sendEmail \
+          --s3-bucket racer-prod-lambda-s3-bucket-0000 \
+          --s3-key sendEmail.zip
